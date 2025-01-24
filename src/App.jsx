@@ -68,8 +68,11 @@ function App() {
   }
 
   const handleEdit=async()=>{
+    console.log(editTodoDetails);
+    
     try{
       await updateTodoDetailsAPI(editTodoDetails)
+      alert("updation success")
       getAllTodo()
     }catch(err){
       console.log(err);
@@ -103,8 +106,8 @@ function App() {
                     <td>{item.description}</td>
                     <td>{item.deadline}</td>
                     <td>{item.priority}</td>
-                    <td><input className='text-center form-check-input border-black me-2' type="checkbox" aria-describedby="textHelp" />Status</td>
-                    <td><button onClick={()=>setEditTodoDetails(item.id)} data-bs-toggle="modal" data-bs-target="#exampleModalEdit" className='btn'> <i class="fa-solid fa-pen-to-square text-primary"></i></button></td>
+                    <td><input onChange={(e)=>setTodoDetails({...todoDetails,completion:e.target.checked})} className='text-center form-check-input border-black me-2' type="checkbox" aria-describedby="textHelp" />Status</td>
+                    <td><button onClick={()=>setEditTodoDetails({id:item.id,title:item.title,description:item.description,deadline:item.deadline,priority:item.priority,completion:item.completion})} data-bs-toggle="modal" data-bs-target="#exampleModalEdit" className='btn'> <i class="fa-solid fa-pen-to-square text-primary"></i></button></td>
                     <td><button onClick={()=>handleTrash(item.id)} className='btn'><i class="fa-solid fa-trash text-danger"></i></button></td>
                   </tr>
                 ))
@@ -145,10 +148,10 @@ function App() {
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body ">
-              <input onChange={(e) => setEditTodoDetails({ ...editTodoDetails, title: e.target.value })} type="text" class="form-control m-2" aria-describedby="textHelp" placeholder='Title' />
-              <input onChange={(e) => setEditTodoDetails({ ...editTodoDetails, description: e.target.value })} type="text" class="form-control m-2" aria-describedby="textHelp" placeholder='Description' />
-              <input onChange={(e) => setEditTodoDetails({ ...editTodoDetails, deadline: e.target.value })} type="date" class="form-control m-2" aria-describedby="textHelp" placeholder='Deadline' />
-              <input onChange={(e) => setEditTodoDetails({ ...editTodoDetails, priority: e.target.value })} type="number" class="form-control m-2" aria-describedby="textHelp" placeholder='Priority Level' />
+              <input value={editTodoDetails.title} onChange={(e) => setEditTodoDetails({ ...editTodoDetails, title: e.target.value })} type="text" class="form-control m-2" aria-describedby="textHelp" placeholder='Title' />
+              <input value={editTodoDetails.description} onChange={(e) => setEditTodoDetails({ ...editTodoDetails, description: e.target.value })} type="text" class="form-control m-2" aria-describedby="textHelp" placeholder='Description' />
+              <input value={editTodoDetails.deadline} onChange={(e) => setEditTodoDetails({ ...editTodoDetails, deadline: e.target.value })} type="date" class="form-control m-2" aria-describedby="textHelp" placeholder='Deadline' />
+              <input value={editTodoDetails.priority} onChange={(e) => setEditTodoDetails({ ...editTodoDetails, priority: e.target.value })} type="number" class="form-control m-2" aria-describedby="textHelp" placeholder='Priority Level' />
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
