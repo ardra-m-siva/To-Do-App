@@ -67,12 +67,22 @@ function App() {
     }
   }
 
-  const handleEdit=async()=>{
-    console.log(editTodoDetails);
-    
+  const handleEdit=async()=>{    
     try{
       await updateTodoDetailsAPI(editTodoDetails)
       alert("updation success")
+      getAllTodo()
+    }catch(err){
+      console.log(err);
+      
+    }
+  }
+
+  const onCheckChange= async(value,item)=>{
+    setTodoDetails({...item,completion:value})
+    try{
+      await updateTodoDetailsAPI(todoDetails)
+      setTodoDetails({...item,completion:false})
       getAllTodo()
     }catch(err){
       console.log(err);
@@ -106,7 +116,7 @@ function App() {
                     <td>{item.description}</td>
                     <td>{item.deadline}</td>
                     <td>{item.priority}</td>
-                    <td><input onChange={(e)=>setTodoDetails({...todoDetails,completion:e.target.checked})} className='text-center form-check-input border-black me-2' type="checkbox" aria-describedby="textHelp" />Status</td>
+                    <td><input checked={item.completion} onChange={(e)=>onCheckChange(e.target.value,item)} className='text-center form-check-input border-black me-2' type="checkbox" aria-describedby="textHelp" />Status</td>
                     <td><button onClick={()=>setEditTodoDetails({id:item.id,title:item.title,description:item.description,deadline:item.deadline,priority:item.priority,completion:item.completion})} data-bs-toggle="modal" data-bs-target="#exampleModalEdit" className='btn'> <i class="fa-solid fa-pen-to-square text-primary"></i></button></td>
                     <td><button onClick={()=>handleTrash(item.id)} className='btn'><i class="fa-solid fa-trash text-danger"></i></button></td>
                   </tr>
